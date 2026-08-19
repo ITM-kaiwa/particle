@@ -25,6 +25,14 @@ const app = {
     showHome() {
         this.showScreen('home');
     },
+
+    shuffleAllQuestions() {
+        // 全問題をランダムにシャッフルする
+        particleData.sort(() => 0.5 - Math.random());
+        alert("問題をシャッフルしました！\nĐã trộn câu hỏi!");
+        // 通常練習モードのメニューを再描画する場合は必要に応じて
+    },
+
     
     // 通常練習モード
     showNormalModeMenu() {
@@ -70,7 +78,7 @@ const app = {
         
         this.currentQIndex = 0;
         this.score = 0;
-        this.timer = 10;
+        this.timer = 30;
         
         document.getElementById('timer-text').classList.remove('hidden');
         this.updateTimerText();

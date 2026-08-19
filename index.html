@@ -14,7 +14,8 @@
             <p>モードを選んでください / Chọn chế độ</p>
             <div class="menu-buttons">
                 <button onclick="app.showNormalModeMenu()">通常練習モード<br><small>Chế độ luyện tập</small></button>
-                <button onclick="app.startTimeAttack()">タイムアタックモード<br><small>Thử thách 10 giây</small></button>
+                <button onclick="app.startTimeAttack()">タイムアタックモード<br><small>Thử thách 30 giây</small></button>
+                <button onclick="app.shuffleAllQuestions()" style="background-color: #f39c12;">問題をシャッフル<br><small>Trộn tất cả câu hỏi</small></button>
             </div>
         </div>
 
@@ -32,7 +33,7 @@
         <div id="practice-screen" class="screen">
             <div class="header">
                 <span id="progress-text">問題 1 / 25</span>
-                <span id="timer-text" class="hidden">残り: 10秒</span>
+                <span id="timer-text" class="hidden">残り: 30秒</span>
             </div>
             
             <div class="main-content">
