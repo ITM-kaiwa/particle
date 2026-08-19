@@ -38,7 +38,13 @@
             <div class="main-content">
                 <div class="mark-area" id="mark-area"></div>
                 <div class="question-container">
-                    <p id="question-text"></p>`n                    <p id="question-text-vi" style="color: #666; font-size: 18px; margin-bottom: 30px; margin-top: -15px;"></p>
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 5px;">
+                        <p id="question-text" style="margin-bottom: 0;"></p>
+                        <button id="tts-btn" onclick="app.playTTS()" style="padding: 10px; border-radius: 50%; border: none; background-color: #007bff; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; margin-left: 10px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                        </button>
+                    </div>
+                    <p id="question-text-vi" style="color: #666; font-size: 18px; margin-bottom: 30px; margin-top: 0px;"></p>
                     <div id="options-container" class="options">
                         <!-- JSで生成 -->
                     </div>
