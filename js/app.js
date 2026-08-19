@@ -106,6 +106,7 @@ const app = {
         
         // 問題文とマーク初期化
         document.getElementById('question-text').innerHTML = q.sentence_html;
+        document.getElementById('question-text-vi').innerText = q.sentence_vi;
         const markArea = document.getElementById('mark-area');
         markArea.innerText = '';
         markArea.className = 'mark-area';
