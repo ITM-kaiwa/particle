@@ -209,74 +209,8 @@ const app = {
 
 
 
+
 // TTS Logic
-class EdgeTTS {
-    constructor() {
-        this.ws = null;
-        this.audio = new Audio();
-    }
-    
-    async speak(text, voice = 'ja-JP-NanamiNeural') {
-        return new Promise((resolve, reject) => {
-            const token = "6A5AA1D4EAFF4E9FB37E23D68491D6F4";
-            const uuid = crypto.randomUUID().replace(/-/g, '');
-            const url = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=${token}&ConnectionId=${uuid}`;
-            
-            try {
-                this.ws = new WebSocket(url);
-                this.ws.binaryType = 'arraybuffer';
-            } catch (e) {
-                return reject(e);
-            }
-            
-            let audioChunks = [];
-            
-            this.ws.onopen = () => {
-                const date = new Date().toUTCString();
-                const connectMessage = `X-Timestamp:${date}\r\nContent-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"true"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`;
-                this.ws.send(connectMessage);
-                
-                const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='ja-JP'><voice name='${voice}'><prosody pitch='+0Hz' rate='0%' volume='100%'>${text}</prosody></voice></speak>`;
-                
-                const requestMessage = `X-RequestId:${uuid}\r\nContent-Type:application/ssml+xml\r\nX-Timestamp:${date}Z\r\nPath:ssml\r\n\r\n${ssml}`;
-                this.ws.send(requestMessage);
-            };
-            
-            this.ws.onmessage = (e) => {
-                if (typeof e.data === 'string') {
-                    if (e.data.includes('Path:turn.end')) {
-                        const blob = new Blob(audioChunks, { type: 'audio/mp3' });
-                        const url = URL.createObjectURL(blob);
-                        this.audio.src = url;
-                        this.audio.play().catch(reject);
-                        this.audio.onended = resolve;
-                        this.ws.close();
-                    }
-                } else {
-                    const view = new DataView(e.data);
-                    const headerLength = view.getUint16(0);
-                    const audioData = e.data.slice(2 + headerLength);
-                    audioChunks.push(audioData);
-                }
-            };
-            
-            this.ws.onerror = (err) => {
-                reject(err);
-            };
-            
-            // Timeout if it takes too long
-            setTimeout(() => {
-                if (this.ws && this.ws.readyState !== WebSocket.CLOSED) {
-                    this.ws.close();
-                    reject(new Error("Timeout"));
-                }
-            }, 10000);
-        });
-    }
-}
-
-const edgeTts = new EdgeTTS();
-
 app.playTTS = async function() {
     if(this.questions.length === 0) return;
     const q = this.questions[this.currentQIndex];
@@ -293,9 +227,18 @@ app.playTTS = async function() {
     
     try {
         btn.style.backgroundColor = '#007bff'; // EdgeTTS color (Blue)
-        await edgeTts.speak(cleanText);
+        
+        const audioUrl = `/api/tts?text=${encodeURIComponent(cleanText)}`;
+        const audio = new Audio(audioUrl);
+        
+        await new Promise((resolve, reject) => {
+            audio.onended = resolve;
+            audio.onerror = reject;
+            audio.play().catch(reject);
+        });
+        
     } catch (e) {
-        console.warn("EdgeTTS failed, falling back to standard Web Speech API", e);
+        console.warn("Python EdgeTTS API failed, falling back to standard Web Speech API", e);
         btn.style.backgroundColor = '#6c757d'; // Fallback color (Gray)
         
         if ('speechSynthesis' in window) {
