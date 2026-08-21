@@ -391,3 +391,9 @@ rt { font-size: 14px; color: var(--ink-soft); }
   .jp-sentence { font-size: 21px; line-height: 2.5; }
   .jp-tile { width: 48px; height: 48px; font-size: 19px; }
 }
+
+
+/* Vietnamese Font Adjustments */
+.jp-sentence-vi, #exp-vi, button.menu-btn small {
+  font-family: 'Times New Roman', Times, serif;
+}
