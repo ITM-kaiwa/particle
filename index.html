@@ -3,69 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>助詞練習 - Particle Practice</title>
+    <title>助詞パズル - Particle Practice</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <!-- 画面1: モード選択 -->
         <div id="home-screen" class="screen active">
-            <h1>助詞練習ミニアプリ</h1>
-            <p>モードを選んでください / Chọn chế độ</p>
+            <div class="jp-header">
+                <div class="jp-eyebrow">助詞パズル</div>
+                <h1 class="jp-title">正しい助詞を選ぼう</h1>
+            </div>
+            <p class="subtitle">モードを選んでください / Chọn chế độ</p>
             <div class="menu-buttons">
-                <button onclick="app.showNormalModeMenu()">通常練習モード<br><small>Chế độ luyện tập</small></button>
-                <button onclick="app.startTimeAttack()">タイムアタックモード<br><small>Thử thách 30 giây</small></button>
-                <button onclick="app.shuffleAllQuestions()" style="background-color: #f39c12;">問題をシャッフル<br><small>Trộn tất cả câu hỏi</small></button>
+                <button class="menu-btn" onclick="app.showNormalModeMenu()">通常練習モード<br><small>Chế độ luyện tập</small></button>
+                <button class="menu-btn" onclick="app.startTimeAttack()">タイムアタックモード<br><small>Thử thách 30 giây</small></button>
+                <button class="menu-btn" onclick="app.shuffleAllQuestions()">問題をシャッフル<br><small>Trộn tất cả câu hỏi</small></button>
             </div>
         </div>
 
         <!-- 画面2: 通常練習メニュー -->
         <div id="normal-menu-screen" class="screen">
-            <h2>通常練習モード</h2>
-            <p>単位とセットを選んでください</p>
+            <div class="jp-header">
+                <h2 class="jp-title">通常練習モード</h2>
+            </div>
+            <p class="subtitle">単位とセットを選んでください</p>
             <div id="unit-buttons" class="menu-buttons">
                 <!-- JSで生成 -->
             </div>
-            <button class="back-btn" onclick="app.showHome()">戻る / Trở lại</button>
+            <button class="back-btn" onclick="app.showHome()">← 戻る / Trở lại</button>
         </div>
 
         <!-- 画面3: 練習画面 -->
         <div id="practice-screen" class="screen">
-            <div class="header">
+            <div class="header-bar">
                 <span id="progress-text">問題 1 / 25</span>
                 <span id="timer-text" class="hidden">残り: 30秒</span>
             </div>
             
-            <div class="main-content">
-                <div class="mark-area" id="mark-area"></div>
-                <div class="question-container">
-                    <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 5px;">
-                        <p id="question-text" style="margin-bottom: 0;"></p>
-                        <button id="tts-btn" onclick="app.playTTS()" style="padding: 10px; border-radius: 50%; border: none; background-color: #007bff; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; margin-left: 10px;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                        </button>
-                    </div>
-                    <p id="question-text-vi" style="color: #666; font-size: 18px; margin-bottom: 30px; margin-top: 0px;"></p>
-                    <div id="options-container" class="options">
-                        <!-- JSで生成 -->
-                    </div>
-                </div>
+            <div class="jp-progress" id="jp-progress"></div>
+
+            <div class="jp-sentence-wrap">
+                <button id="tts-btn" class="tts-button" onclick="app.playTTS()" title="音声を再生">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                </button>
+                <div class="jp-sentence" id="question-text"></div>
+                <div class="jp-sentence-vi" id="question-text-vi"></div>
             </div>
 
-            <div id="explanation-area" class="explanation hidden">
+            <div class="jp-tray-label">ここから選んでください</div>
+            <div class="jp-tray" id="options-container">
+                <!-- JSで生成 -->
+            </div>
+
+            <div id="explanation-area" class="jp-explanation hidden">
                 <h3>解説 / Giải thích</h3>
-                <p><strong>日本語: </strong><span id="exp-ja"></span></p>
-                <p><strong>Tiếng Việt: </strong><span id="exp-vi"></span></p>
-                <button id="next-btn" class="next-btn" onclick="app.nextQuestion()">次の問題へ / Câu tiếp</button>
+                <p><strong>日本語:</strong> <span id="exp-ja"></span></p>
+                <p><strong>Tiếng Việt:</strong> <span id="exp-vi"></span></p>
+            </div>
+
+            <div class="jp-footer">
+                <button id="next-btn" class="jp-next-btn" onclick="app.nextQuestion()">つぎへ →</button>
             </div>
         </div>
 
         <!-- 画面4: 結果画面 -->
         <div id="result-screen" class="screen">
-            <h2>結果発表 / Kết quả</h2>
-            <p id="result-score"></p>
-            <div class="menu-buttons">
-                <button onclick="app.showHome()">ホームに戻る / Về trang chủ</button>
+            <div class="jp-result">
+                <div class="jp-result-label">RESULT</div>
+                <div class="jp-result-score" id="result-score"></div>
+                <div class="jp-result-label" id="result-detail"></div>
+                <button class="jp-retry-btn" onclick="app.showHome()">ホームに戻る / Về trang chủ</button>
             </div>
         </div>
     </div>

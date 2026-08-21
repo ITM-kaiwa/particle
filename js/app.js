@@ -1,4 +1,3 @@
-
 const app = {
     mode: null,
     currentUnit: null,
@@ -9,7 +8,6 @@ const app = {
     timer: 0,
     timerInterval: null,
     
-    // Screens
     screens: {
         home: document.getElementById('home-screen'),
         normalMenu: document.getElementById('normal-menu-screen'),
@@ -27,23 +25,19 @@ const app = {
     },
 
     shuffleAllQuestions() {
-        // 全問題をランダムにシャッフルする
         particleData.sort(() => 0.5 - Math.random());
         alert("問題をシャッフルしました！\nĐã trộn câu hỏi!");
-        // 通常練習モードのメニューを再描画する場合は必要に応じて
     },
-
     
-    // 通常練習モード
     showNormalModeMenu() {
         this.mode = 'normal';
         const unitButtons = document.getElementById('unit-buttons');
         unitButtons.innerHTML = '';
         
-        // 2 Units * 4 Sets
         for (let unit = 1; unit <= 2; unit++) {
             for (let set = 1; set <= 4; set++) {
                 const btn = document.createElement('button');
+                btn.className = 'menu-btn';
                 btn.innerHTML = `単位 ${unit} - セット ${set} <br><small>Đơn vị ${unit} - Bài ${set}</small>`;
                 btn.onclick = () => this.startNormalPractice(unit, set);
                 unitButtons.appendChild(btn);
@@ -56,7 +50,6 @@ const app = {
         this.currentUnit = unit;
         this.currentSet = set;
         
-        // data.jsから問題を抽出 (25問)
         const startIndex = ((unit - 1) * 100) + ((set - 1) * 25);
         this.questions = particleData.slice(startIndex, startIndex + 25);
         
@@ -68,11 +61,9 @@ const app = {
         this.loadQuestion();
     },
     
-    // タイムアタックモード
     startTimeAttack() {
         this.mode = 'timeattack';
         
-        // ランダムに10問選ぶ
         const shuffled = [...particleData].sort(() => 0.5 - Math.random());
         this.questions = shuffled.slice(0, 10);
         
@@ -96,7 +87,7 @@ const app = {
             this.updateTimerText();
             if (this.timer <= 0) {
                 clearInterval(this.timerInterval);
-                this.endPractice(); // タイムオーバー
+                this.endPractice();
             }
         }, 1000);
     },
@@ -109,78 +100,78 @@ const app = {
         if(this.questions.length === 0) return;
         const q = this.questions[this.currentQIndex];
         
-        // ヘッダー更新
         document.getElementById('progress-text').innerText = `問題 ${this.currentQIndex + 1} / ${this.questions.length}`;
         
-        // 問題文とマーク初期化
-        document.getElementById('question-text').innerHTML = q.sentence_html;
-        document.getElementById('question-text-vi').innerText = q.sentence_vi;
-        const markArea = document.getElementById('mark-area');
-        markArea.innerText = '';
-        markArea.className = 'mark-area';
-        markArea.innerHTML = '';
+        const progressContainer = document.getElementById('jp-progress');
+        progressContainer.innerHTML = '';
+        this.questions.forEach((_, i) => {
+            const dot = document.createElement("div");
+            dot.className = "jp-dot";
+            if (i < this.currentQIndex) dot.classList.add("jp-done");
+            if (i === this.currentQIndex) dot.classList.add("jp-current");
+            progressContainer.appendChild(dot);
+        });
+
+        const parts = q.sentence_html.split('（　）');
+        const before = parts[0] || '';
+        const after = parts.slice(1).join('（　）') || '';
+        const blankHtml = `<span class="jp-blank" id="jp-blank"><span id="jp-blank-text"></span><span class="jp-seal-mark">正</span></span>`;
         
-        // 選択肢生成
+        document.getElementById('question-text').innerHTML = before + blankHtml + after;
+        document.getElementById('question-text-vi').innerText = q.sentence_vi;
+        
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
         
-        q.options.forEach(opt => {
+        const options = [...q.options].sort(() => 0.5 - Math.random());
+        options.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'option-btn';
+            btn.className = 'jp-tile';
             btn.innerText = opt;
             btn.onclick = () => this.checkAnswer(opt, btn);
             optionsContainer.appendChild(btn);
         });
         
-        // 解説非表示
         document.getElementById('explanation-area').classList.add('hidden');
-        
-        // 次の問題ボタンを非表示 (通常モード用)
-        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('next-btn').classList.remove('jp-visible');
     },
     
     checkAnswer(selectedOpt, btnElement) {
-        // 全ボタンを無効化
-        const buttons = document.querySelectorAll('.option-btn');
+        const buttons = document.querySelectorAll('.jp-tile');
         buttons.forEach(b => b.disabled = true);
         
         const q = this.questions[this.currentQIndex];
-        const markArea = document.getElementById('mark-area');
+        const blank = document.getElementById('jp-blank');
+        const blankText = document.getElementById('jp-blank-text');
+        
+        blankText.innerText = selectedOpt;
         
         if (selectedOpt === q.answer) {
-            // 正解
             this.score++;
-            btnElement.classList.add('correct');
-            // 丸の中にレの印
-            markArea.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:100%;height:100%; color:#4CAF50;"><circle cx="12" cy="12" r="10"></circle><polyline points="8 12 11 15 16 9"></polyline></svg>';
-            markArea.classList.add('correct');
+            blank.classList.add("jp-filled", "jp-correct");
         } else {
-            // 不正解
-            btnElement.classList.add('wrong');
-            markArea.innerText = '✖';
-            markArea.style.color = '#F44336';
-            markArea.classList.add('wrong');
+            blank.classList.add("jp-filled", "jp-incorrect");
+            setTimeout(() => blank.classList.remove("jp-incorrect"), 320);
             
             buttons.forEach(b => {
-                if(b.innerText === q.answer) {
-                    b.style.border = '2px solid #4CAF50';
+                if (b.innerText === q.answer) {
+                    b.style.borderColor = "var(--moss)";
+                    b.style.color = "var(--moss)";
+                    b.style.boxShadow = "none";
                 }
             });
         }
         
-        // 解説表示
         document.getElementById('exp-ja').innerText = q.explanation_ja;
         document.getElementById('exp-vi').innerText = q.explanation_vi;
         document.getElementById('explanation-area').classList.remove('hidden');
         
         if (this.mode === 'timeattack') {
-            // タイムアタックの場合、解説を読ませずにさっさと次へ行かせる(0.5秒後)
             setTimeout(() => {
                 this.nextQuestion();
-            }, 500);
+            }, 800);
         } else {
-            // 通常モードは「次へ」ボタンを表示
-            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('next-btn').classList.add('jp-visible');
         }
     },
     
@@ -196,19 +187,18 @@ const app = {
     endPractice() {
         clearInterval(this.timerInterval);
         
-        let resultText = `正解数: ${this.score} / ${this.questions.length}`;
+        document.getElementById('result-score').innerText = `${this.score} / ${this.questions.length}`;
+        let pct = Math.round((this.score / this.questions.length) * 100);
+        let msg = pct === 100 ? "パーフェクト!" : pct >= 70 ? "よくできました" : "もう一度復習しましょう";
+        
         if (this.mode === 'timeattack' && this.timer <= 0) {
-            resultText = `タイムオーバー！<br>` + resultText;
+            msg = "タイムオーバー！\n" + msg;
         }
         
-        document.getElementById('result-score').innerHTML = resultText;
+        document.getElementById('result-detail').innerText = msg;
         this.showScreen('result');
     }
 };
-
-
-
-
 
 // TTS Logic
 app.playTTS = async function() {
@@ -226,7 +216,7 @@ app.playTTS = async function() {
     cleanText = cleanText.replace(/（\s*）/g, ' ほにゃらら '); 
     
     try {
-        btn.style.backgroundColor = '#007bff'; // EdgeTTS color (Blue)
+        btn.style.backgroundColor = '#0056b3'; // Darker blue for active state
         
         const audioUrl = `/api/tts?text=${encodeURIComponent(cleanText)}`;
         const audio = new Audio(audioUrl);
