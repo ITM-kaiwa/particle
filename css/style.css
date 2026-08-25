@@ -207,8 +207,12 @@ rt { font-size: 14px; color: var(--ink-soft); }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5em;
+  min-width: 1.5em;
   height: 1.15em;
+  padding: 0 0.15em;
+  box-sizing: content-box;
+  white-space: nowrap;
+  line-height: 1;
   vertical-align: -0.28em;
   margin: 0 4px;
   border: 2px solid var(--ink-soft);
@@ -218,6 +222,10 @@ rt { font-size: 14px; color: var(--ink-soft); }
   color: var(--ai);
   position: relative;
   transition: border-color 0.15s ease, background 0.15s ease;
+}
+.jp-blank #jp-blank-text {
+  white-space: nowrap;
+  line-height: 1;
 }
 .jp-blank.jp-filled { border-color: var(--ai); background: var(--ai-soft); }
 .jp-blank.jp-correct { border-color: var(--moss); background: var(--moss-soft); color: var(--moss); }
