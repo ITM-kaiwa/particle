@@ -39,7 +39,7 @@ const app = {
             for (let set = 1; set <= 4; set++) {
                 const btn = document.createElement('button');
                 btn.className = 'menu-btn';
-                btn.innerHTML = `単位 ${unit} - セット ${set} <br><small>Đơn vị ${unit} - Bài ${set}</small>`;
+                btn.innerHTML = `Đơn vị ${unit} - Bài ${set} <br><small>単位 ${unit} - セット ${set}</small>`;
                 btn.onclick = () => this.startNormalPractice(unit, set);
                 unitButtons.appendChild(btn);
             }
@@ -94,14 +94,14 @@ const app = {
     },
     
     updateTimerText() {
-        document.getElementById('timer-text').innerText = `残り: ${this.timer}秒`;
+        document.getElementById('timer-text').innerText = `Còn lại: ${this.timer} giây`;
     },
     
     loadQuestion() {
         if(this.questions.length === 0) return;
         const q = this.questions[this.currentQIndex];
         
-        document.getElementById('progress-text').innerText = `問題 ${this.currentQIndex + 1} / ${this.questions.length}`;
+        document.getElementById('progress-text').innerText = `Câu ${this.currentQIndex + 1} / ${this.questions.length}`;
         
         const progressContainer = document.getElementById('jp-progress');
         progressContainer.innerHTML = '';
@@ -189,16 +189,19 @@ const app = {
     
     endPractice() {
         clearInterval(this.timerInterval);
-        
+
         document.getElementById('result-score').innerText = `${this.score} / ${this.questions.length}`;
         let pct = Math.round((this.score / this.questions.length) * 100);
-        let msg = pct === 100 ? "パーフェクト!" : pct >= 70 ? "よくできました" : "もう一度復習しましょう";
-        
+        let msgVi = pct === 100 ? "Xuất sắc!" : pct >= 70 ? "Làm rất tốt!" : "Hãy ôn tập lại nhé";
+        let msgJa = pct === 100 ? "パーフェクト!" : pct >= 70 ? "よくできました" : "もう一度復習しましょう";
+
         if (this.mode === 'timeattack' && this.timer <= 0) {
-            msg = "タイムオーバー！\n" + msg;
+            msgVi = "Hết giờ! " + msgVi;
+            msgJa = "タイムオーバー！ " + msgJa;
         }
-        
-        document.getElementById('result-detail').innerText = msg;
+
+        document.getElementById('result-detail-vi').innerText = msgVi;
+        document.getElementById('result-detail-jp').innerText = msgJa;
         this.showScreen('result');
     }
 };
