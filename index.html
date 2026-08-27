@@ -12,26 +12,28 @@
         <div id="home-screen" class="screen active">
             <div class="jp-header">
                 <div class="jp-eyebrow">助詞パズル</div>
-                <h1 class="jp-title">正しい助詞を選ぼう</h1>
+                <h1 class="jp-title">Chọn trợ từ đúng</h1>
+                <div class="jp-title-sub">正しい助詞を選ぼう</div>
             </div>
-            <p class="subtitle">モードを選んでください / Chọn chế độ</p>
+            <p class="subtitle">Chọn chế độ / モードを選んでください</p>
             <div class="menu-buttons">
-                <button class="menu-btn" onclick="app.showNormalModeMenu()">通常練習モード<br><small>Chế độ luyện tập</small></button>
-                <button class="menu-btn" onclick="app.startTimeAttack()">タイムアタックモード<br><small>Thử thách 30 giây</small></button>
-                <button class="menu-btn" onclick="app.shuffleAllQuestions()">問題をシャッフル<br><small>Trộn tất cả câu hỏi</small></button>
+                <button class="menu-btn" onclick="app.showNormalModeMenu()">Chế độ luyện tập<br><small>通常練習モード</small></button>
+                <button class="menu-btn" onclick="app.startTimeAttack()">Thử thách 30 giây<br><small>タイムアタックモード</small></button>
+                <button class="menu-btn" onclick="app.shuffleAllQuestions()">Trộn tất cả câu hỏi<br><small>問題をシャッフル</small></button>
             </div>
         </div>
 
         <!-- 画面2: 通常練習メニュー -->
         <div id="normal-menu-screen" class="screen">
             <div class="jp-header">
-                <h2 class="jp-title">通常練習モード</h2>
+                <h2 class="jp-title">Chế độ luyện tập thường</h2>
+                <div class="jp-title-sub">通常練習モード</div>
             </div>
-            <p class="subtitle">単位とセットを選んでください</p>
+            <p class="subtitle">Chọn đơn vị và bộ câu hỏi / 単位とセットを選んでください</p>
             <div id="unit-buttons" class="menu-buttons">
                 <!-- JSで生成 -->
             </div>
-            <button class="back-btn" onclick="app.showHome()">← 戻る / Trở lại</button>
+            <button class="back-btn" onclick="app.showHome()">← Trở lại / 戻る</button>
         </div>
 
         <!-- 画面3: 練習画面 -->
@@ -47,8 +49,8 @@
                 <button id="tts-btn" class="tts-button" onclick="app.playTTS()" title="音声を再生">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                 </button>
-                <div class="jp-sentence" id="question-text"></div>
                 <div class="jp-sentence-vi" id="question-text-vi"></div>
+                <div class="jp-sentence" id="question-text"></div>
             </div>
 
             <div class="jp-tray-label">ここから選んでください</div>
@@ -57,13 +59,13 @@
             </div>
 
             <div id="explanation-area" class="jp-explanation hidden">
-                <h3>解説 / Giải thích</h3>
-                <p><strong>日本語:</strong> <span id="exp-ja"></span></p>
-                <p><strong>Tiếng Việt:</strong> <span id="exp-vi"></span></p>
+                <h3>Giải thích / 解説</h3>
+                <p class="exp-main"><span id="exp-vi"></span></p>
+                <p class="exp-sub">日本語: <span id="exp-ja"></span></p>
             </div>
 
             <div class="jp-footer">
-                <button id="next-btn" class="jp-next-btn" onclick="app.nextQuestion()">つぎへ →</button>
+                <button id="next-btn" class="jp-next-btn" onclick="app.nextQuestion()">Tiếp theo → / つぎへ</button>
             </div>
         </div>
 
@@ -72,8 +74,9 @@
             <div class="jp-result">
                 <div class="jp-result-label">RESULT</div>
                 <div class="jp-result-score" id="result-score"></div>
-                <div class="jp-result-label" id="result-detail"></div>
-                <button class="jp-retry-btn" onclick="app.showHome()">ホームに戻る / Về trang chủ</button>
+                <div class="jp-result-detail-vi" id="result-detail-vi"></div>
+                <div class="jp-result-detail-jp" id="result-detail-jp"></div>
+                <button class="jp-retry-btn" onclick="app.showHome()">Về trang chủ / ホームに戻る</button>
             </div>
         </div>
     </div>
