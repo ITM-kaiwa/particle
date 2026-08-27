@@ -78,6 +78,12 @@ body {
   background: var(--seal);
   opacity: 0.55;
 }
+.jp-title-sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  font-family: "Zen Maru Gothic", sans-serif;
+}
 
 p.subtitle {
   text-align: center;
@@ -173,9 +179,11 @@ button.menu-btn small {
   position: relative;
 }
 .jp-sentence {
-  font-size: 26px;
-  line-height: 2.6;
+  font-size: 19px;
+  line-height: 2.3;
   letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  margin-top: 10px;
 }
 ruby { ruby-align: center; }
 rt { font-size: 14px; color: var(--ink-soft); }
@@ -258,9 +266,10 @@ rt { font-size: 14px; color: var(--ink-soft); }
 }
 
 .jp-sentence-vi {
-  font-size: 16px;
-  color: var(--ink-soft);
-  margin-top: 10px;
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 4px;
 }
 
 /* Tray and Tiles */
@@ -332,6 +341,16 @@ rt { font-size: 14px; color: var(--ink-soft); }
   margin: 8px 0;
   line-height: 1.6;
 }
+.jp-explanation .exp-main {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.jp-explanation .exp-sub {
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
 
 .jp-footer {
   display: flex;
@@ -378,6 +397,17 @@ rt { font-size: 14px; color: var(--ink-soft); }
   color: var(--ink-soft);
   letter-spacing: 0.12em;
 }
+.jp-result-detail-vi {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 4px;
+}
+.jp-result-detail-jp {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
 .jp-retry-btn {
   margin-top: 22px;
   font-family: "Zen Maru Gothic", sans-serif;
@@ -396,7 +426,8 @@ rt { font-size: 14px; color: var(--ink-soft); }
 
 @media (max-width: 480px) {
   .jp-card { padding: 26px 16px 20px; }
-  .jp-sentence { font-size: 21px; line-height: 2.5; }
+  .jp-sentence { font-size: 16px; line-height: 2.1; }
+  .jp-sentence-vi { font-size: 18px; }
   .jp-tile { width: 48px; height: 48px; font-size: 19px; }
 }
 
