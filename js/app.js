@@ -7,6 +7,7 @@ const app = {
     score: 0,
     timer: 0,
     timerInterval: null,
+    answered: false,
     
     screens: {
         home: document.getElementById('home-screen'),
@@ -134,11 +135,13 @@ const app = {
         
         document.getElementById('explanation-area').classList.add('hidden');
         document.getElementById('next-btn').classList.remove('jp-visible');
+        this.answered = false;
     },
-    
+
     checkAnswer(selectedOpt, btnElement) {
         const buttons = document.querySelectorAll('.jp-tile');
         buttons.forEach(b => b.disabled = true);
+        this.answered = true;
         
         const q = this.questions[this.currentQIndex];
         const blank = document.getElementById('jp-blank');
@@ -213,7 +216,9 @@ app.playTTS = async function() {
     
     let cleanText = q.sentence_html.replace(/<rt>.*?<\/rt>/g, '');
     cleanText = cleanText.replace(/<[^>]+>/g, '');
-    cleanText = cleanText.replace(/（\s*）/g, ' ほにゃらら '); 
+    cleanText = this.answered
+        ? cleanText.replace(/（\s*）/g, ` ${q.answer} `)
+        : cleanText.replace(/（\s*）/g, ' ほにゃらら ');
     
     try {
         btn.style.backgroundColor = '#0056b3'; // Darker blue for active state
