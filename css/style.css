@@ -123,6 +123,33 @@ button.menu-btn small {
   font-weight: 400;
 }
 
+.download-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 9px 12px;
+  border: 1px dashed var(--ink-soft);
+  border-radius: 4px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-family: "Zen Maru Gothic", sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.download-link small {
+  font-weight: 400;
+  opacity: 0.85;
+}
+.download-link:hover {
+  background-color: var(--moss-soft);
+  border-color: var(--moss);
+  border-style: solid;
+  color: var(--moss);
+}
+
 .back-btn {
   background-color: transparent;
   color: var(--ink-soft);
